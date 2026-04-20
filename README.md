@@ -19,12 +19,35 @@ Open [http://localhost:3000](http://localhost:3000). A **demo case** is written 
 
 ## Scripts
 
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm run dev`  | Local development server |
-| `npm run build`| Production build         |
-| `npm run start`| Run production build     |
-| `npm run lint` | ESLint                   |
+| Command            | Description                                      |
+| ------------------ | ------------------------------------------------ |
+| `npm run dev`      | Local development server (default port **3000**) |
+| `npm run dev:server` | Development server on port **3006** (match prod) |
+| `npm run build`    | Production build                                 |
+| `npm run start`    | Production server on port **3006**               |
+| `npm run lint`     | ESLint                                           |
+
+### Ubuntu / server (`~/apps/echo`)
+
+After `npm install` and `npm run build`, run:
+
+```bash
+npm run start
+```
+
+Production `next start` uses hostname **0.0.0.0** by default, so the app is reachable at **`http://<server-ip>:3006`** on your LAN.
+
+To restrict to this machine only:
+
+```bash
+npx next start -p 3006 -H localhost
+```
+
+To expose dev mode on the same port:
+
+```bash
+npm run dev:server
+```
 
 ## Project layout
 
