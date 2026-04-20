@@ -55,7 +55,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   Accordion,
   AccordionContent,
@@ -686,19 +685,30 @@ export function EchoApp() {
   const measurementsSection = (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card p-3">
-        <div className="flex items-center gap-3">
-          <Switch
-            checked={quickMode}
-            onCheckedChange={setQuickMode}
-            id="quick-mode"
-          />
-          <Label htmlFor="quick-mode" className="text-base">
-            Quick mode (Ao, LA, LVIDd, LVIDs, IVSd, LVPWd only)
-          </Label>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant={quickMode ? "default" : "outline"}
+            size="sm"
+            className="min-h-10"
+            onClick={() => setQuickMode(true)}
+          >
+            Quick mode
+          </Button>
+          <Button
+            type="button"
+            variant={!quickMode ? "default" : "outline"}
+            size="sm"
+            className="min-h-10"
+            onClick={() => setQuickMode(false)}
+          >
+            Advanced mode
+          </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Turn off to enter IVSs, LVPWs, LV length, mitral E/A, and aortic
-          velocity.
+          {quickMode
+            ? "Quick shows Ao, LA, LVIDd, LVIDs, IVSd, LVPWd."
+            : "Advanced includes IVSs, LVPWs, LV length, mitral E/A, and aortic velocity."}
         </p>
       </div>
 
