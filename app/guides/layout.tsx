@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Measurement guide — Canine Echo Helper",
+  title: "Measurement guide — Echocardiogram Recorder",
   description: "Searchable echocardiography measurement instructions for dogs.",
 };
 

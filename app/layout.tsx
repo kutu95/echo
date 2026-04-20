@@ -11,9 +11,9 @@ const sans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Canine Echo Helper",
+  title: "Echocardiogram Recorder",
   description:
-    "Chairside calculator and reference for canine cardiac ultrasound measurements.",
+    "Chairside recorder and reference for canine cardiac ultrasound measurements.",
 };
 
 export default function RootLayout({

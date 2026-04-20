@@ -20,7 +20,7 @@ export function ReportView({ record, calculated, interpretation }: Props) {
   return (
     <div id="printable-report" className="space-y-6 bg-white p-6 text-black">
       <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Canine Echo Helper — Case summary</h1>
+        <h1 className="text-2xl font-semibold">Echocardiogram Recorder — Case summary</h1>
         <p className="text-sm text-neutral-600">Generated {generatedAt}</p>
       </header>
 

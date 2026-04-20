@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useForm, useWatch, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Printer, FileJson, Copy, Trash2, Plus, Activity } from "lucide-react";
+import { Printer, FileJson, Copy, Trash2, Plus } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -90,6 +90,37 @@ const DESKTOP_TABS: Array<{ value: TabValue; label: string }> = [
   { value: "archive", label: "Archive" },
 ];
 
+function UltrasoundIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className="size-6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 3.5C15.6 3.5 18.5 6.4 18.5 10V10.4C18.5 14.6 15.8 18.4 12 20.3C8.2 18.4 5.5 14.6 5.5 10.4V10C5.5 6.4 8.4 3.5 12 3.5Z"
+        className="stroke-current/70"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M12 6.8V20.3"
+        className="stroke-current/80"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M8.4 10.2C9.4 9.5 10.6 9.1 12 9.1C13.4 9.1 14.6 9.5 15.6 10.2"
+        className="stroke-current/80"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="12.7" r="1.1" className="fill-current" />
+    </svg>
+  );
+}
+
 function useDebouncedEffect(
   fn: () => void,
   deps: React.DependencyList,
@@ -107,7 +138,8 @@ function buildRecord(
   title: string,
   values: FullCaseFormValues,
   existingCreatedAt?: string,
-  attachments: CaseAttachment[] = []
+  attachments: CaseAttachment[] = [],
+  interpretationOverrides: Record<string, string> = {}
 ): CaseRecord {
   const now = new Date().toISOString();
   return {
@@ -119,6 +151,7 @@ function buildRecord(
     measurements: formMeasurementsToModel(values),
     reportNotes: values.reportNotes ?? "",
     attachments,
+    interpretationOverrides,
   };
 }
 
@@ -159,6 +192,7 @@ function demoCaseRecord(): CaseRecord {
     },
     reportNotes: "Illustrative values for UI testing; not a clinical interpretation.",
     attachments: [],
+    interpretationOverrides: {},
   };
 }
 
@@ -166,7 +200,8 @@ function caseDataFingerprint(
   id: string,
   title: string,
   values: FullCaseFormValues,
-  attachments: CaseAttachment[]
+  attachments: CaseAttachment[],
+  interpretationOverrides: Record<string, string>
 ) {
   return JSON.stringify({
     id,
@@ -181,7 +216,31 @@ function caseDataFingerprint(
       url: a.url,
       uploadedAt: a.uploadedAt,
     })),
+    interpretationOverrides,
   });
+}
+
+function sanitizeOverrides(overrides: Record<string, string> | undefined) {
+  const next: Record<string, string> = {};
+  for (const [k, v] of Object.entries(overrides ?? {})) {
+    if (typeof v !== "string") continue;
+    if (v.trim() === "") continue;
+    next[k] = v;
+  }
+  return next;
+}
+
+function applyInterpretationOverrides(
+  bundle: import("@/types/models").InterpretationBundle,
+  overrides: Record<string, string>
+) {
+  return {
+    ...bundle,
+    findings: bundle.findings.map((f) => ({
+      ...f,
+      detail: overrides[f.id] ?? f.detail,
+    })),
+  };
 }
 
 export function EchoApp() {
@@ -207,6 +266,9 @@ export function EchoApp() {
   );
   const [showActiveGuide, setShowActiveGuide] = React.useState(false);
   const [attachments, setAttachments] = React.useState<CaseAttachment[]>([]);
+  const [interpretationOverrides, setInterpretationOverrides] = React.useState<
+    Record<string, string>
+  >({});
   const [isHydratingCase, setIsHydratingCase] = React.useState(false);
   const [archiveError, setArchiveError] = React.useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = React.useState(false);
@@ -288,6 +350,8 @@ export function EchoApp() {
         if (ignore) return;
         setCaseTitle(rec.title);
         setAttachments(rec.attachments ?? []);
+        const normalizedOverrides = sanitizeOverrides(rec.interpretationOverrides);
+        setInterpretationOverrides(normalizedOverrides);
         lastSavedFingerprintRef.current = caseDataFingerprint(
           rec.id,
           rec.title,
@@ -297,7 +361,8 @@ export function EchoApp() {
             ...modelMeasurementsToForm(rec.measurements),
             reportNotes: rec.reportNotes ?? "",
           },
-          rec.attachments ?? []
+          rec.attachments ?? [],
+          normalizedOverrides
         );
         inFlightFingerprintRef.current = "";
         reset({
@@ -326,11 +391,24 @@ export function EchoApp() {
     () => {
       if (!caseId || isHydratingCase) return;
       const values = liveValues;
-      const fingerprint = caseDataFingerprint(caseId, caseTitle, values, attachments);
+      const fingerprint = caseDataFingerprint(
+        caseId,
+        caseTitle,
+        values,
+        attachments,
+        interpretationOverrides
+      );
       if (fingerprint === lastSavedFingerprintRef.current) return;
       if (fingerprint === inFlightFingerprintRef.current) return;
       const existing = cases.find((c) => c.id === caseId);
-      const rec = buildRecord(caseId, caseTitle, values, existing?.createdAt, attachments);
+      const rec = buildRecord(
+        caseId,
+        caseTitle,
+        values,
+        existing?.createdAt,
+        attachments,
+        interpretationOverrides
+      );
       inFlightFingerprintRef.current = fingerprint;
       saveCaseToServer(rec)
         .then((saved) => {
@@ -343,7 +421,8 @@ export function EchoApp() {
               ...modelMeasurementsToForm(saved.measurements),
               reportNotes: saved.reportNotes ?? "",
             },
-            saved.attachments ?? []
+            saved.attachments ?? [],
+            saved.interpretationOverrides ?? {}
           );
           lastSavedFingerprintRef.current = savedFingerprint;
           if (inFlightFingerprintRef.current === fingerprint) {
@@ -367,7 +446,15 @@ export function EchoApp() {
           );
         });
     },
-    [liveValues, caseId, caseTitle, isHydratingCase, attachments, cases],
+    [
+      liveValues,
+      caseId,
+      caseTitle,
+      isHydratingCase,
+      attachments,
+      interpretationOverrides,
+      cases,
+    ],
     500
   );
 
@@ -398,13 +485,24 @@ export function EchoApp() {
     () => interpretEcho(measurementsModel, calculated),
     [measurementsModel, calculated]
   );
+  const interpretationForReport = React.useMemo(
+    () => applyInterpretationOverrides(interpretation, interpretationOverrides),
+    [interpretation, interpretationOverrides]
+  );
 
   const currentRecord = React.useMemo(() => {
     if (!caseId) return null;
     const values = liveValues;
     const createdAt = cases.find((c) => c.id === caseId)?.createdAt;
-    return buildRecord(caseId, caseTitle, values, createdAt, attachments);
-  }, [caseId, caseTitle, liveValues, cases, attachments]);
+    return buildRecord(
+      caseId,
+      caseTitle,
+      values,
+      createdAt,
+      attachments,
+      interpretationOverrides
+    );
+  }, [caseId, caseTitle, liveValues, cases, attachments, interpretationOverrides]);
 
   const openDiagramForKey = (key: MeasurementKey, preferImage?: boolean) => {
     const g = measurementGuideByKey[key];
@@ -434,12 +532,14 @@ export function EchoApp() {
         ...defaultFullCaseFormValues(),
         reportNotes: rec.reportNotes,
       } as FullCaseFormValues,
-      rec.attachments ?? []
+      rec.attachments ?? [],
+      rec.interpretationOverrides ?? {}
     );
     inFlightFingerprintRef.current = "";
     setIsHydratingCase(true);
     reset(defaultFullCaseFormValues());
     setAttachments([]);
+    setInterpretationOverrides({});
     await saveCaseToServer(rec);
     const all = await refreshCases();
     setCaseId(rec.id);
@@ -472,6 +572,7 @@ export function EchoApp() {
       reset(defaultFullCaseFormValues());
       setCaseTitle("Untitled case");
       setAttachments([]);
+      setInterpretationOverrides({});
     }
     setArchiveError(null);
   };
@@ -517,7 +618,8 @@ export function EchoApp() {
             ...modelMeasurementsToForm(latest.measurements),
             reportNotes: latest.reportNotes ?? "",
           },
-          latest.attachments ?? []
+          latest.attachments ?? [],
+          latest.interpretationOverrides ?? {}
         );
         inFlightFingerprintRef.current = "";
         await refreshCases();
@@ -537,6 +639,10 @@ export function EchoApp() {
     setCalcRefresh((v) => v + 1);
     setLastRecalculatedAt(new Date().toLocaleTimeString());
   }, [form]);
+  const handleRecalculateInterpretationText = React.useCallback(() => {
+    setInterpretationOverrides({});
+    setLastRecalculatedAt(new Date().toLocaleTimeString());
+  }, []);
 
   const calcRows = [
     {
@@ -799,13 +905,42 @@ export function EchoApp() {
         >
           Back to measurements
         </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className="min-h-11"
+          onClick={handleRecalculateInterpretationText}
+        >
+          Recalculate interpretation text
+        </Button>
       </div>
       {lastRecalculatedAt ? (
         <p className="text-xs text-muted-foreground">
           Recalculated at {lastRecalculatedAt}
         </p>
       ) : null}
-      <InterpretationAlert bundle={interpretation} />
+      <InterpretationAlert
+        bundle={interpretation}
+        overrides={interpretationOverrides}
+        onOverrideChange={(finding, nextText) =>
+          setInterpretationOverrides((prev) => {
+            const trimmed = nextText.trim();
+            if (trimmed === "" || nextText === finding.detail) {
+              const next = { ...prev };
+              delete next[finding.id];
+              return next;
+            }
+            return { ...prev, [finding.id]: nextText };
+          })
+        }
+        onResetOverride={(finding) =>
+          setInterpretationOverrides((prev) => {
+            const next = { ...prev };
+            delete next[finding.id];
+            return next;
+          })
+        }
+      />
       <CalculationCard rows={calcRows} warnings={calculated.warnings} />
     </div>
   );
@@ -910,7 +1045,7 @@ export function EchoApp() {
         <ReportView
           record={currentRecord}
           calculated={calculated}
-          interpretation={interpretation}
+          interpretation={interpretationForReport}
         />
       </div>
     ) : null;
@@ -978,14 +1113,14 @@ export function EchoApp() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3">
             <div className="mt-1 rounded-md bg-primary/10 p-2 text-primary">
-              <Activity className="size-6" />
+              <UltrasoundIcon />
             </div>
             <div>
               <h1 className="text-xl font-semibold tracking-tight md:text-2xl">
-                Canine Echo Helper
+                Echocardiogram Recorder
               </h1>
               <p className="text-sm text-muted-foreground">
-                Chairside calculator and reference for canine cardiac ultrasound.
+                Chairside recorder and reference for canine cardiac ultrasound.
               </p>
             </div>
           </div>
