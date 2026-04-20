@@ -14,6 +14,24 @@ type Props = {
 
 const measurementOrder: MeasurementKey[] = measurementGuides.map((g) => g.key);
 
+function formatSexLabel(value: CaseRecord["patient"]["sex"]) {
+  if (!value) return "—";
+  switch (value) {
+    case "male":
+      return "Male";
+    case "male_neuter":
+      return "Male neuter";
+    case "female":
+      return "Female";
+    case "female_neuter":
+      return "Female neuter";
+    case "unknown":
+      return "Unknown";
+    default:
+      return String(value);
+  }
+}
+
 export function ReportView({ record, calculated, interpretation }: Props) {
   const generatedAt = new Date().toLocaleString();
 
@@ -52,7 +70,7 @@ export function ReportView({ record, calculated, interpretation }: Props) {
             </tr>
             <tr>
               <td className="py-1 text-neutral-600">Sex</td>
-              <td className="py-1">{record.patient.sex || "—"}</td>
+              <td className="py-1">{formatSexLabel(record.patient.sex)}</td>
             </tr>
             <tr>
               <td className="py-1 text-neutral-600">Heart rate</td>
@@ -119,10 +137,7 @@ export function ReportView({ record, calculated, interpretation }: Props) {
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold">Pattern recognition summary</h2>
-        <p className="mt-1 text-xs text-neutral-600">
-          Educational / decision support only — not a diagnosis.
-        </p>
+        <h2 className="text-lg font-semibold">Summary</h2>
         <ul className="mt-2 space-y-2 text-sm">
           {interpretation.findings.map((f) => (
             <li key={f.id}>

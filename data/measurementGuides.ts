@@ -71,7 +71,7 @@ export const measurementGuides: MeasurementGuide[] = [
     clinicalWhy:
       "LVIDd contextualizes chamber size for systolic function indices and wall thickness.",
     significance:
-      "Used with LVIDs to compute FS% and to screen for dilation versus concentric patterns.",
+      "Used with LVIDs to compute FS% and to screen for dilation versus concentric remodeling.",
     localImagePath: guideImage("lvidd.png"),
     diagramView: "papillarySax",
     diagramHighlight: "LVIDd",
@@ -113,7 +113,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Gain settings that thicken trabecular echoes.",
     ],
     clinicalWhy:
-      "Septal thickness helps classify concentric remodeling/hypertrophy patterns.",
+      "Septal thickness helps classify concentric remodeling/hypertrophy.",
     significance:
       "Interpret with breed, body weight, and LV cavity size — dogs vary widely.",
     localImagePath: guideImage("ivsd.png"),
@@ -249,7 +249,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Poor alignment underestimates velocity.",
     ],
     clinicalWhy:
-      "Screens for dynamic obstruction or stenosis patterns when clinically relevant.",
+      "Screens for dynamic obstruction or stenosis when clinically relevant.",
     significance:
       "Interpret with pressure gradients and 2D morphology — not a standalone diagnosis.",
     localImagePath: guideImage("ao-vmax.png"),

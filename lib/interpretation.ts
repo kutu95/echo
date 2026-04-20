@@ -5,12 +5,7 @@ import type {
   Measurements,
 } from "@/types/models";
 
-const SAFETY_COPY = [
-  "This tool is educational and for clinical support only.",
-  "Reference intervals vary with body size, breed, and technique.",
-  "Do not use this as a sole basis for diagnosis.",
-  "True hypertrophic cardiomyopathy is uncommon in dogs.",
-];
+const SAFETY_COPY: string[] = [];
 
 function laAoFinding(ratio: number | null): InterpretationFinding | null {
   if (ratio === null) return null;
@@ -19,7 +14,7 @@ function laAoFinding(ratio: number | null): InterpretationFinding | null {
       id: "laa-normal",
       title: "LA:Ao screen",
       detail:
-        "LA:Ao is within a commonly cited general reference range (≤ 1.6). This is decision support only; breed and body size matter.",
+        "LA:Ao is within a commonly cited general reference range (≤ 1.6). Breed and body size matter.",
       severity: "info",
     };
   }
