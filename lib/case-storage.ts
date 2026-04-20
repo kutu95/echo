@@ -97,6 +97,7 @@ export function ensureDemoCaseSeeded() {
       mitralA: 0.55,
     },
     reportNotes: "Illustrative values for UI testing; not a clinical interpretation.",
+    attachments: [],
   };
   const existing = loadAllCases();
   if (!existing.some((c) => c.id === demo.id)) {
@@ -126,6 +127,7 @@ export function newEmptyCase(): CaseRecord {
     },
     measurements: {},
     reportNotes: "",
+    attachments: [],
   };
 }
 

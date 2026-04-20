@@ -1,0 +1,26 @@
+{
+  "id": "mo6xfr7u-ky716j",
+  "title": "Biscuit",
+  "createdAt": "2026-04-20T08:22:25.674Z",
+  "updatedAt": "2026-04-20T08:40:19.827Z",
+  "patient": {
+    "patientName": "Biscuit",
+    "recordId": "",
+    "examDate": "2026-04-20",
+    "weightKg": "20",
+    "breed": "Kelpie cross",
+    "sex": "female_neuter",
+    "heartRate": "140",
+    "notes": ""
+  },
+  "measurements": {
+    "ao": 2.13,
+    "la": 4.07,
+    "lvidD": 4.8,
+    "lvidS": 3.4,
+    "ivsD": 0.82,
+    "lvpwD": 0.96
+  },
+  "reportNotes": "",
+  "attachments": []
+}

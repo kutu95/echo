@@ -1,0 +1,30 @@
+{
+  "id": "demo-case",
+  "title": "Demo: mixed-breed adult",
+  "createdAt": "2026-04-20T08:20:32.022Z",
+  "updatedAt": "2026-04-20T08:26:34.133Z",
+  "patient": {
+    "patientName": "Demo Dog",
+    "recordId": "DEMO-001",
+    "examDate": "2026-04-20",
+    "weightKg": "22.5",
+    "breed": "Mixed breed",
+    "sex": "female",
+    "heartRate": "",
+    "notes": "Example only — replace with real study data."
+  },
+  "measurements": {
+    "ao": 2,
+    "la": 2.4,
+    "lvidD": 4.2,
+    "lvidS": 2.7,
+    "ivsD": 0.9,
+    "ivsS": 1.2,
+    "lvpwD": 0.9,
+    "lvpwS": 1.1,
+    "mitralE": 0.85,
+    "mitralA": 0.55
+  },
+  "reportNotes": "Illustrative values for UI testing; not a clinical interpretation.",
+  "attachments": []
+}

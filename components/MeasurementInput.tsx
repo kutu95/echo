@@ -25,7 +25,6 @@ type Props = {
   onOpenGuide: () => void;
   onOpenDiagram: () => void;
   onViewImage?: () => void;
-  onFieldFocus?: () => void;
   showImageButton?: boolean;
   className?: string;
 };
@@ -42,7 +41,6 @@ export const MeasurementInput = React.forwardRef<HTMLInputElement, Props>(
       onOpenGuide,
       onOpenDiagram,
       onViewImage,
-      onFieldFocus,
       showImageButton,
       className,
     },
@@ -65,9 +63,6 @@ export const MeasurementInput = React.forwardRef<HTMLInputElement, Props>(
             className="min-h-11 min-w-[8rem] flex-1 text-base"
             placeholder="—"
             {...registration}
-            onFocus={() => {
-              onFieldFocus?.();
-            }}
             ref={(el) => {
               registration.ref(el);
               if (typeof ref === "function") ref(el);

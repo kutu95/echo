@@ -1,6 +1,12 @@
 /** Domain models for Canine Echo Helper. */
 
-export type Sex = "male" | "female" | "unknown" | "";
+export type Sex =
+  | "male"
+  | "male_neuter"
+  | "female"
+  | "female_neuter"
+  | "unknown"
+  | "";
 
 export type MeasurementKey =
   | "ao"
@@ -88,4 +94,12 @@ export type CaseRecord = {
   patient: PatientDetails;
   measurements: Measurements;
   reportNotes: string;
+  attachments: CaseAttachment[];
+};
+
+export type CaseAttachment = {
+  id: string;
+  fileName: string;
+  url: string;
+  uploadedAt: string;
 };

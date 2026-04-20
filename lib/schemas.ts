@@ -18,7 +18,9 @@ export const patientSchema = z.object({
     .union([
       z.literal(""),
       z.literal("male"),
+      z.literal("male_neuter"),
       z.literal("female"),
+      z.literal("female_neuter"),
       z.literal("unknown"),
     ])
     .default(""),
@@ -128,14 +130,14 @@ export function defaultFullCaseFormValues(): FullCaseFormValues {
 
 export function modelPatientToForm(p: PatientDetails): PatientFormValues {
   return {
-    patientName: p.patientName,
-    recordId: p.recordId,
-    examDate: p.examDate,
-    weightKg: p.weightKg,
-    breed: p.breed,
-    sex: p.sex,
-    heartRate: p.heartRate,
-    notes: p.notes,
+    patientName: p.patientName ?? "",
+    recordId: p.recordId ?? "",
+    examDate: p.examDate ?? "",
+    weightKg: p.weightKg ?? "",
+    breed: p.breed ?? "",
+    sex: p.sex ?? "",
+    heartRate: p.heartRate ?? "",
+    notes: p.notes ?? "",
   };
 }
 

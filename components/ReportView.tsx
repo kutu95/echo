@@ -140,6 +140,21 @@ export function ReportView({ record, calculated, interpretation }: Props) {
         </p>
       </section>
 
+      <section>
+        <h2 className="text-lg font-semibold">Attached images</h2>
+        {record.attachments?.length ? (
+          <ul className="mt-2 space-y-1 text-sm">
+            {record.attachments.map((img) => (
+              <li key={img.id}>
+                {img.fileName} — {img.url}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-2 text-sm">—</p>
+        )}
+      </section>
+
       <footer className="border-t pt-4 text-xs text-neutral-600">
         This app is for educational and clinical support purposes only and is not
         a substitute for specialist cardiology interpretation.

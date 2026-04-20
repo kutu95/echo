@@ -58,9 +58,12 @@ npm run dev:server
 | `lib/calculations.ts` | LA:Ao, FS%, E:A, sanity checks |
 | `lib/interpretation.ts` | Rules-based pattern prompts + safety copy |
 | `lib/schemas.ts` | Zod schemas for forms |
-| `lib/case-storage.ts` | `localStorage` persistence |
+| `lib/case-api.ts` | Client API for server case JSON persistence |
+| `lib/server/case-files.ts` | Server filesystem JSON archive helpers |
 | `data/measurementGuides.ts` | Instructional content (add `localImagePath` for your PNGs) |
 | `public/guides/` | Drop teaching images here and reference them from `measurementGuides` |
+| `public/uploads/cases/` | Uploaded case images (referenced by case JSON) |
+| `server-data/cases/` | One JSON file per archived case (`<case-id>.json`) |
 | `types/models.ts` | Shared TypeScript models |
 
 ## Customization hooks (TODOs in code)
@@ -81,3 +84,9 @@ git push -u origin main
 ## Disclaimer
 
 This application is for **educational and clinical support only**. It does not provide a medical diagnosis. Always correlate with full clinical context and specialist review where appropriate.
+
+## Archive and JSON files
+
+- Every case is saved server-side as `server-data/cases/<case-id>.json`.
+- Open the **Archive** tab in the app to browse and open saved cases.
+- Uploaded case images are stored under `public/uploads/cases/<case-id>/` and referenced in each case JSON via `attachments[]`.
