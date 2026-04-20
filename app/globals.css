@@ -16,14 +16,15 @@
     --font-sans: var(--font-sans);
   }
   :root {
+    /* TODO: tune primary / chart tokens for your hospital branding */
+    --primary: oklch(0.52 0.14 252);
+    --primary-foreground: oklch(0.99 0 0);
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
@@ -83,12 +84,33 @@
     --sidebar-ring: oklch(0.556 0 0);
   }
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
   }
   body {
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@media print {
+  body.echo-print-report * {
+    visibility: hidden;
+  }
+  body.echo-print-report #printable-report,
+  body.echo-print-report #printable-report * {
+    visibility: visible;
+  }
+  body.echo-print-report #printable-report {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body.echo-print-report .echo-no-print {
+    display: none !important;
   }
 }
