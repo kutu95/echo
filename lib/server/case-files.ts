@@ -20,10 +20,20 @@ function caseFilePath(id: string) {
   return path.join(CASES_DIR, `${id}.json`);
 }
 
+function basenameFromUrl(url: string) {
+  try {
+    const pathname = url.split("?")[0] ?? url;
+    return decodeURIComponent(pathname.substring(pathname.lastIndexOf("/") + 1));
+  } catch {
+    return url;
+  }
+}
+
 function normalizeCaseRecord(parsed: Partial<CaseRecord>): CaseRecord {
   const now = new Date().toISOString();
+  const id = parsed.id ?? `${Date.now().toString(36)}-unknown`;
   return {
-    id: parsed.id ?? `${Date.now().toString(36)}-unknown`,
+    id,
     title: parsed.title ?? "Untitled case",
     createdAt: parsed.createdAt ?? now,
     updatedAt: parsed.updatedAt ?? now,
@@ -39,7 +49,14 @@ function normalizeCaseRecord(parsed: Partial<CaseRecord>): CaseRecord {
     },
     measurements: parsed.measurements ?? {},
     reportNotes: parsed.reportNotes ?? "",
-    attachments: parsed.attachments ?? [],
+    attachments: (parsed.attachments ?? []).map((a) => {
+      const storedName = a.storedName ?? basenameFromUrl(a.url);
+      return {
+        ...a,
+        storedName,
+        url: `/api/cases/${id}/images/${encodeURIComponent(storedName)}`,
+      };
+    }),
   };
 }
 

@@ -100,6 +100,8 @@ export type CaseRecord = {
 export type CaseAttachment = {
   id: string;
   fileName: string;
+  /** Actual filename on disk under public/uploads/cases/<case-id>/ */
+  storedName?: string;
   url: string;
   uploadedAt: string;
 };

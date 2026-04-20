@@ -178,6 +178,7 @@ function caseDataFingerprint(
     attachments: attachments.map((a) => ({
       id: a.id,
       fileName: a.fileName,
+      storedName: a.storedName ?? "",
       url: a.url,
       uploadedAt: a.uploadedAt,
     })),

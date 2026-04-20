@@ -40,7 +40,8 @@ export async function POST(request: Request, { params }: Params) {
   const attachment: CaseAttachment = {
     id: attachmentId(),
     fileName: safeName,
-    url: `/uploads/cases/${params.id}/${stamped}`,
+    storedName: stamped,
+    url: `/api/cases/${params.id}/images/${encodeURIComponent(stamped)}`,
     uploadedAt: new Date().toISOString(),
   };
 
