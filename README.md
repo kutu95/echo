@@ -1,4 +1,4 @@
-# Canine Echo Helper
+# Echocardiogram Recorder
 
 Chairside **React / Next.js (App Router)** tool for entering canine echocardiography linear measurements, viewing **decision-support** interpretations (not diagnoses), and reviewing **how-to-measure** guidance with **inline SVG schematics**.
 

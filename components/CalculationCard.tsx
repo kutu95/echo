@@ -25,7 +25,7 @@ export function CalculationCard({
   className,
 }: Props) {
   return (
-    <Card className={cn("border-border/80", className)}>
+    <Card className={cn("border-border/60 bg-slate-50 dark:bg-slate-900/10", className)}>
       <CardHeader className="border-b py-3">
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>

@@ -143,22 +143,23 @@ export function ReportView({ record, calculated, interpretation }: Props) {
       <section>
         <h2 className="text-lg font-semibold">Attached images</h2>
         {record.attachments?.length ? (
-          <ul className="mt-2 space-y-1 text-sm">
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
             {record.attachments.map((img) => (
-              <li key={img.id}>
-                {img.fileName} — {img.url}
-              </li>
+              <figure key={img.id} className="space-y-2 break-inside-avoid rounded border p-2">
+                <img
+                  src={img.url}
+                  alt={img.fileName || "Attached echocardiogram image"}
+                  className="h-auto max-h-80 w-full rounded object-contain"
+                />
+                <figcaption className="text-xs text-neutral-600">{img.fileName || "Attachment"}</figcaption>
+              </figure>
             ))}
-          </ul>
+          </div>
         ) : (
           <p className="mt-2 text-sm">—</p>
         )}
       </section>
 
-      <footer className="border-t pt-4 text-xs text-neutral-600">
-        This app is for educational and clinical support purposes only and is not
-        a substitute for specialist cardiology interpretation.
-      </footer>
     </div>
   );
 }

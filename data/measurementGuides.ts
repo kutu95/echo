@@ -2,8 +2,12 @@ import type { MeasurementGuide, MeasurementKey } from "@/types/models";
 
 /**
  * Instructional content for each measurement.
- * TODO: Set `localImagePath` (e.g. `/guides/ao-la.png`) after you drop PNG/JPEG assets into `public/guides/`.
+ * Drop PNG/JPEG assets into `public/guides/` and keep filenames stable.
+ * When you replace an image, bump GUIDE_IMAGE_VERSION to refresh browser cache.
  */
+const GUIDE_IMAGE_VERSION = "v1";
+const guideImage = (fileName: string) => `/guides/${fileName}?v=${GUIDE_IMAGE_VERSION}`;
+
 export const measurementGuides: MeasurementGuide[] = [
   {
     key: "ao",
@@ -23,6 +27,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Ao serves as an internal body-size proxy on the same frame as LA so LA:Ao can be less affected by gain/zoom than LA alone.",
     significance:
       "LA:Ao is widely used as a quick screen for left atrial enlargement relative to body size, though breed-specific ranges may differ.",
+    localImagePath: guideImage("ao.png"),
     diagramView: "heartBaseSax",
     diagramHighlight: "Ao",
   },
@@ -44,6 +49,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "LA size reflects chronic volume overload (e.g., mitral regurgitation) and atrial pressure/remodeling.",
     significance:
       "LA:Ao > 1.6 is a common general cut-point for suspicion of enlargement; many institutions refine by breed.",
+    localImagePath: guideImage("la.png"),
     diagramView: "heartBaseSax",
     diagramHighlight: "LA",
   },
@@ -66,6 +72,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "LVIDd contextualizes chamber size for systolic function indices and wall thickness.",
     significance:
       "Used with LVIDs to compute FS% and to screen for dilation versus concentric patterns.",
+    localImagePath: guideImage("lvidd.png"),
     diagramView: "papillarySax",
     diagramHighlight: "LVIDd",
   },
@@ -87,6 +94,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Paired with LVIDd to estimate fractional shortening.",
     significance:
       "FS% is load- and heart-rate dependent; abnormal FS prompts review of image quality and loading conditions.",
+    localImagePath: guideImage("lvids.png"),
     diagramView: "papillarySax",
     diagramHighlight: "LVIDs",
   },
@@ -108,6 +116,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Septal thickness helps classify concentric remodeling/hypertrophy patterns.",
     significance:
       "Interpret with breed, body weight, and LV cavity size — dogs vary widely.",
+    localImagePath: guideImage("ivsd.png"),
     diagramView: "papillarySax",
     diagramHighlight: "IVSd",
   },
@@ -125,6 +134,7 @@ export const measurementGuides: MeasurementGuide[] = [
     ],
     clinicalWhy: "Confirms expected systolic thickening and flags timing errors.",
     significance: "Should be ≥ IVSd; reversal suggests measurement error.",
+    localImagePath: guideImage("ivss.png"),
     diagramView: "papillarySax",
     diagramHighlight: "IVSs",
   },
@@ -145,6 +155,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Posterior wall thickness completes relative wall thickness thinking with IVSd.",
     significance:
       "Thick walls with small cavity may be normal for breed or suggest dynamic physiology; integrate FS and Doppler.",
+    localImagePath: guideImage("lvpwd.png"),
     diagramView: "papillarySax",
     diagramHighlight: "LVPWd",
   },
@@ -159,6 +170,7 @@ export const measurementGuides: MeasurementGuide[] = [
     pitfalls: ["Same as LVPWd plus frame selection errors."],
     clinicalWhy: "Paired with LVPWd to sanity-check timing.",
     significance: "Should be ≥ LVPWd; reversal suggests measurement error.",
+    localImagePath: guideImage("lvpws.png"),
     diagramView: "papillarySax",
     diagramHighlight: "LVPWs",
   },
@@ -179,6 +191,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Optional adjunct for volume estimates or sphericity assessment when you use length-based methods.",
     significance:
       "Not required for FS% or LA:Ao in this tool; helpful for selected research or advanced indices.",
+    localImagePath: guideImage("lv-length.png"),
     diagramView: "optionalSchematic",
     diagramHighlight: "LV",
   },
@@ -199,6 +212,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Provides diastolic filling information when paired with A wave.",
     significance:
       "E:A trends with relaxation and preload but is heart-rate dependent.",
+    localImagePath: guideImage("mitral-e.png"),
     diagramView: "optionalSchematic",
     diagramHighlight: "MV",
   },
@@ -217,6 +231,7 @@ export const measurementGuides: MeasurementGuide[] = [
     clinicalWhy: "Combined with E for E:A ratio in this tool.",
     significance:
       "Very rough diastolic screen — specialist indices (E/e′, etc.) are not implemented here.",
+    localImagePath: guideImage("mitral-a.png"),
     diagramView: "optionalSchematic",
     diagramHighlight: "MV",
   },
@@ -237,6 +252,7 @@ export const measurementGuides: MeasurementGuide[] = [
       "Screens for dynamic obstruction or stenosis patterns when clinically relevant.",
     significance:
       "Interpret with pressure gradients and 2D morphology — not a standalone diagnosis.",
+    localImagePath: guideImage("ao-vmax.png"),
     diagramView: "optionalSchematic",
     diagramHighlight: "Ao",
   },

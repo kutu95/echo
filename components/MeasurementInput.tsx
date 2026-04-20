@@ -47,7 +47,12 @@ export const MeasurementInput = React.forwardRef<HTMLInputElement, Props>(
     ref
   ) {
     return (
-      <div className={cn("space-y-2 rounded-lg border bg-card p-3", className)}>
+      <div
+        className={cn(
+          "space-y-2 rounded-lg border border-border/60 bg-slate-50 p-3 dark:bg-slate-900/10",
+          className
+        )}
+      >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <Label htmlFor={id} className="text-base font-medium">
             {label}
@@ -60,7 +65,7 @@ export const MeasurementInput = React.forwardRef<HTMLInputElement, Props>(
             inputMode="decimal"
             autoComplete="off"
             aria-invalid={error ? "true" : "false"}
-            className="min-h-11 min-w-[8rem] flex-1 text-base"
+            className="min-h-11 min-w-[8rem] flex-1 bg-white text-base"
             placeholder="—"
             {...registration}
             ref={(el) => {

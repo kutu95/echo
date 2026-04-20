@@ -37,7 +37,6 @@ import type {
   MeasurementKey,
   CaseAttachment,
 } from "@/types/models";
-import { AppDisclaimer } from "@/components/AppDisclaimer";
 import { CalculationCard } from "@/components/CalculationCard";
 import { DiagramForGuide } from "@/components/DiagramForGuide";
 import { DiagramModal } from "@/components/DiagramModal";
@@ -683,7 +682,7 @@ export function EchoApp() {
           Demographics for the worksheet and printed report.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4 sm:grid-cols-2">
+      <CardContent className="grid gap-4 rounded-b-xl bg-slate-50 pb-4 sm:grid-cols-2 [&_[data-slot=input]]:bg-background [&_[data-slot=textarea]]:bg-background">
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="caseTitle">Case title</Label>
           <Input
@@ -836,7 +835,7 @@ export function EchoApp() {
           <GuideCard
             guide={focusedGuide}
             onShowOnDiagram={() =>
-              openDiagramForKey(focusedGuide.key, Boolean(focusedGuide.localImagePath))
+              openDiagramForKey(focusedGuide.key, true)
             }
           />
         </div>
@@ -958,7 +957,7 @@ export function EchoApp() {
         <GuideCard
           key={g.key}
           guide={g}
-          onShowOnDiagram={() => openDiagramForKey(g.key)}
+          onShowOnDiagram={() => openDiagramForKey(g.key, true)}
         />
       ))}
     </div>
@@ -1271,10 +1270,6 @@ export function EchoApp() {
           {summaryPanel}
         </aside>
       </main>
-
-      <div className="echo-no-print print:hidden">
-        <AppDisclaimer />
-      </div>
 
       <DiagramModal
         open={diagramOpen}
