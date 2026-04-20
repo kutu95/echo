@@ -56,17 +56,17 @@ export function calculateResults(m: Measurements): CalculatedResults {
     );
   }
 
-  if (ivsD !== undefined && ivsS !== undefined && ivsS > ivsD * 1.05) {
+  if (ivsD !== undefined && ivsS !== undefined && ivsS < ivsD * 0.95) {
     geometryFlags.ivsInconsistent = true;
     warnings.push(
-      "IVSs exceeds IVSd — verify systolic/diastolic timing and landmarks."
+      "IVSs is less than IVSd — verify systolic/diastolic timing and landmarks."
     );
   }
 
-  if (lvpwD !== undefined && lvpwS !== undefined && lvpwS > lvpwD * 1.05) {
+  if (lvpwD !== undefined && lvpwS !== undefined && lvpwS < lvpwD * 0.95) {
     geometryFlags.lvpwInconsistent = true;
     warnings.push(
-      "LVPWs exceeds LVPWd — verify systolic/diastolic timing and landmarks."
+      "LVPWs is less than LVPWd — verify systolic/diastolic timing and landmarks."
     );
   }
 
