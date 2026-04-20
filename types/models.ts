@@ -95,6 +95,8 @@ export type CaseRecord = {
   measurements: Measurements;
   reportNotes: string;
   attachments: CaseAttachment[];
+  /** Optional per-finding override text keyed by InterpretationFinding.id */
+  interpretationOverrides: Record<string, string>;
 };
 
 export type CaseAttachment = {

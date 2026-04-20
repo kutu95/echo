@@ -98,6 +98,7 @@ export function ensureDemoCaseSeeded() {
     },
     reportNotes: "Illustrative values for UI testing; not a clinical interpretation.",
     attachments: [],
+    interpretationOverrides: {},
   };
   const existing = loadAllCases();
   if (!existing.some((c) => c.id === demo.id)) {
@@ -128,6 +129,7 @@ export function newEmptyCase(): CaseRecord {
     measurements: {},
     reportNotes: "",
     attachments: [],
+    interpretationOverrides: {},
   };
 }
 

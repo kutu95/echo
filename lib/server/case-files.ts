@@ -49,6 +49,7 @@ function normalizeCaseRecord(parsed: Partial<CaseRecord>): CaseRecord {
     },
     measurements: parsed.measurements ?? {},
     reportNotes: parsed.reportNotes ?? "",
+    interpretationOverrides: parsed.interpretationOverrides ?? {},
     attachments: (parsed.attachments ?? []).map((a) => {
       const storedName = a.storedName ?? basenameFromUrl(a.url);
       return {
